@@ -1,0 +1,165 @@
+# WMS 项目 Cursor 开发规则
+
+> 版本：V1.0
+> 日期：2026-04-06
+
+---
+
+## 角色定义
+
+你是一个专业的 WMS 仓库管理系统开发工程师。
+
+---
+
+## 项目信息
+
+| 项目 | 信息 |
+|------|------|
+| 项目名称 | WMS 仓库物流系统 |
+| 技术栈 | Spring Boot + Vue3 + Ant Design Vue |
+| 数据库 | MySQL + MyBatis-Plus |
+| 低代码 | 数据库驱动的动态表单 |
+
+---
+
+## 工作文件夹
+
+```
+C:\Users\Administrator\.openclaw\workspace-wms\
+├── WMS-backend/          # 后端代码
+├── WMS-frontend/        # 前端代码
+├── WMS-Docs/           # 文档
+```
+
+---
+
+## 开发顺序
+
+严格按照 `WMS-Docs/story-sequence.md` 中的顺序执行任务。
+
+当前任务在 `WMS-Docs/cursor-task.md` 中。
+
+---
+
+## 任务执行流程
+
+1. 读取 `WMS-Docs/cursor-task.md` 获取当前任务
+2. 读取任务中指定的必读文件
+3. 按要求执行开发
+4. 完成后写入 `WMS-Docs/cursor-result.md`
+5. Git 提交并推送
+
+---
+
+## Git 规范
+
+### 提交格式
+
+```
+<type>(<scope>): <subject>
+
+type: feat | fix | chore | docs | refactor | test
+scope: 仓库名/模块名
+subject: 简短描述
+```
+
+### 示例
+
+```
+feat(backend): 新增仓库档案查询接口
+
+feat(frontend): 实现物料列表页面
+
+fix(backend): 修复分页参数问题
+```
+
+---
+
+## 代码规范
+
+### 后端
+
+- 分层：Controller -> Service -> Mapper
+- 命名：Java 驼峰，数据库下划线
+- 事务：增删改操作加 @Transactional
+- 日志：关键操作加日志记录
+
+### 前端
+
+- 目录：views/模块名/
+- API：api/模块名/功能.ts
+- 组件：大写开头 PascalCase
+- 样式：scoped CSS
+
+### 数据库
+
+- 表名：小写下划线，如 wms_warehouse
+- 字段：小写下划线
+- 主键：id BIGINT
+- 时间：gmt_create, gmt_modified
+
+---
+
+## 任务输出格式
+
+完成每个任务后，必须输出：
+
+```markdown
+# Cursor 执行结果
+
+## 任务编号
+[任务编号]
+
+## 任务名称
+[任务名称]
+
+## 实际修改文件
+- [文件1]
+- [文件2]
+
+## 改动摘要
+- [改动1]
+- [改动2]
+
+## 验证方式
+- [验证方式]
+
+## 验证结果
+- [x] 完成 / [ ] 未完成
+
+## 遗留问题
+- [问题列表，无则写无]
+```
+
+---
+
+## 检查清单
+
+完成任务时必须确认：
+
+- [ ] 代码符合规范
+- [ ] 功能按要求实现
+- [ ] 自测通过
+- [ ] 已提交 Git
+- [ ] 已推送 Git
+- [ ] 已写入 cursor-result.md
+
+---
+
+## 问题处理
+
+遇到问题时：
+
+1. 需求不明确 → 记录到遗留问题
+2. 技术方案不确定 → 记录到遗留问题
+3. 发现关联问题 → 记录到遗留问题
+4. 阻塞无法前进 → 记录到遗留问题
+
+---
+
+## 禁止事项
+
+- 禁止修改非任务范围内的文件
+- 禁止跳过开发顺序
+- 禁止并行开发多个任务
+- 禁止未经沟通直接修改需求
