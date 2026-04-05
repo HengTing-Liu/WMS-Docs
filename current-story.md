@@ -1,6 +1,6 @@
 # Current Story
 
-> 版本：V2.0
+> 版本：V3.0
 > 日期：2026-04-06
 > 说明：当前正在处理的子任务
 
@@ -15,31 +15,25 @@
 | 所属 Story | 11-01 表元数据管理 |
 | 所属 Epic | Epic-11 低代码配置管理 |
 | 当前阶段 | BE |
-| 当前状态 | 进行中 |
-| 当前负责人 | Cursor BE |
+| 当前状态 | ✅ 已完成 |
+| 当前负责人 | Claude Code Subagent |
 | 串行顺序 | 第 2 个子任务 |
 
 ## 前置状态
 
-- 11-01-PM ✅ 已完成（需求已确认）
-- 11-01-BE 🔄 进行中
+- 11-01-PM ✅ 已完成（OpenClaw PM确认）
+- 11-01-BE ✅ 已完成（Claude Code Subagent）
 - 11-01-FE ⏳ 待开始
 - 11-01-QA ⏳ 待开始
 
-## 本轮任务
+## 完成情况
 
-后端接口开发：Controller/Service/Mapper
-
-## 完成标准
-
-- [ ] Controller 接口开发完成
-- [ ] Service 业务逻辑实现
-- [ ] Mapper 数据库操作
-- [ ] 表编码唯一性校验
-- [ ] 删除关联检查
-- [ ] 操作日志记录
-- [ ] 自测通过
+- Controller ✅ WmsTableMetaController + TableMetaController
+- Service ✅ IWmsTableMetaService + WmsTableMetaServiceImpl
+- Mapper ✅ WmsTableMetaMapper
+- DO ✅ WmsTableMeta
+- Git ✅ 已提交推送
 
 ## 下一步
 
-11-01-BE 完成后进入 11-01-FE
+11-01-BE 完成后进入 11-01-FE 前端开发
