@@ -1,6 +1,6 @@
 # Cursor Task
 
-> 版本：V1.0
+> 版本：V1.1
 > 日期：2026-04-06
 > 子任务：11-01-BE
 
@@ -35,33 +35,44 @@
 
 ---
 
-## 技术要求
+## 实际数据库表结构
 
-### 后端分层
+```sql
+sys_table_meta (
+  id BIGINT PRIMARY KEY,
+  table_code VARCHAR(100) NOT NULL UNIQUE,
+  table_name VARCHAR(200) NOT NULL,
+  module VARCHAR(50),
+  entity_class VARCHAR(200),
+  service_class VARCHAR(200),
+  permission_code VARCHAR(100),
+  page_size INT DEFAULT 20,
+  is_tree TINYINT DEFAULT 0,
+  status TINYINT DEFAULT 1,
+  remark VARCHAR(500),
+  create_by VARCHAR(64),
+  create_time DATETIME,
+  update_by VARCHAR(64),
+  update_time DATETIME,
+  is_deleted_column VARCHAR(50),
+  has_data_permission TINYINT DEFAULT 0,
+  permission_field VARCHAR(64),
+  permission_scope VARCHAR(32)
+)
+```
+
+---
+
+## 后端分层
 
 - Controller：`WmsTableMetaController`
 - Service：`IWmsTableMetaService` + `WmsTableMetaServiceImpl`
 - Mapper：`WmsTableMetaMapper`
 - DO 实体：`WmsTableMeta`
 
-### 数据库表
+---
 
-```sql
-CREATE TABLE sys_table_meta (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
-  table_code VARCHAR(50) NOT NULL COMMENT '表编码',
-  table_name VARCHAR(100) NOT NULL COMMENT '表名称',
-  table_desc VARCHAR(500) COMMENT '表描述',
-  module VARCHAR(50) NOT NULL COMMENT '所属模块',
-  crud_prefix VARCHAR(100) COMMENT 'CRUD接口前缀',
-  is_enabled TINYINT DEFAULT 1 COMMENT '是否启用',
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  UNIQUE KEY uk_table_code (table_code)
-) COMMENT '表元数据';
-```
-
-### 接口清单
+## 接口清单
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
@@ -70,14 +81,17 @@ CREATE TABLE sys_table_meta (
 | GET | `/api/system/meta/table/code/{code}` | 通过编码查询 |
 | POST | `/api/system/meta/table` | 创建表元数据 |
 | PUT | `/api/system/meta/table/{id}` | 更新表元数据 |
-| DELETE | `/api/system/meta/table/{id}` | 删除表元数据（含关联检查） |
+| DELETE | `/api/system/meta/table/{id}` | 删除表元数据（逻辑删除） |
 | PUT | `/api/system/meta/table/{id}/toggle` | 启用/禁用切换 |
 
-### 业务规则
+---
+
+## 业务规则
 
 1. 表编码唯一，重复时报错
-2. 删除前检查是否有关联字段
+2. 删除使用逻辑删除（is_deleted_column）
 3. 新增/修改/删除记录操作日志
+4. 自动填充 create_by, create_time, update_by, update_time
 
 ---
 
@@ -90,7 +104,7 @@ CREATE TABLE sys_table_meta (
 ## 禁止修改
 
 - `WMS-frontend/` — 前端代码
-- 其他 Story 相关代码
+- 数据库表结构
 
 ---
 
@@ -100,7 +114,7 @@ CREATE TABLE sys_table_meta (
 - [ ] Service 业务逻辑实现
 - [ ] Mapper 数据库操作
 - [ ] 表编码唯一性校验
-- [ ] 删除关联检查
+- [ ] 逻辑删除支持
 - [ ] 操作日志记录
 - [ ] 自测通过
 
