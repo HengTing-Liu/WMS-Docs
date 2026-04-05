@@ -1,6 +1,6 @@
 # Cursor Task
 
-> 版本：V1.0
+> 版本：V1.1
 > 日期：2026-04-06
 > 子任务：11-01-PM
 
@@ -8,9 +8,7 @@
 
 ## 执行 Agent
 
-**使用 MDC（Claude Code）执行开发任务**
-
-命令：`/cursor` 或在 MDC 中启动 Claude Code
+**使用 Cursor BE（后端）执行开发任务**
 
 ---
 
@@ -81,8 +79,6 @@
 ---
 
 ## Git 提交
-
-任务完成后执行：
 
 ```bash
 git add .
