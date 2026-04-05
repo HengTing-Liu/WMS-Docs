@@ -1,32 +1,60 @@
 # OpenClaw 与 Cursor 交流规则
 
-> 版本：V1.0
+> 版本：V1.1
 > 日期：2026-04-06
-> 适用范围：OpenClaw（wms总控）<-> Cursor
+> 更新说明：使用 Git 推送文件交流，Cursor 使用 MDC
 
 ---
 
-## 一、工作文件夹
+## 一、Git 交流机制
+
+### 1.1 文件传输流程
+
+```
+OpenClaw 写文件 → Git 提交 → Git 推送 → Cursor Git 拉取 → Cursor 读取
+Cursor 写文件 → Git 提交 → Git 推送 → OpenClaw Git 拉取 → OpenClaw 读取
+```
+
+### 1.2 Git 仓库
+
+| 仓库 | 地址 | 用途 |
+|------|------|------|
+| WMS-Docs | git@github.com:HengTing-Liu/WMS-Docs.git | 文档交流 |
+| WMS-backend | git@github.com:HengTing-Liu/WMS-backend.git | 后端代码 |
+| WMS-frontend | git@github.com:HengTing-Liu/WMS-frontend.git | 前端代码 |
+
+### 1.3 Git 操作频率
+
+| 时机 | 操作 |
+|------|------|
+| 任务开始前 | OpenClaw Git 推送任务文件 |
+| 任务完成后 | Cursor Git 推送结果文件 |
+| OpenClaw 响应前 | OpenClaw Git 拉取最新 |
+
+---
+
+## 二、工作文件夹
 
 ```
 C:\Users\Administrator\.openclaw\workspace-wms\
-├── WMS-backend/          # 后端代码（Cursor 开发）
-├── WMS-frontend/        # 前端代码（Cursor 开发）
-├── WMS-Docs/            # 文档（共同维护）
+├── WMS-backend/          # 后端代码
+├── WMS-frontend/        # 前端代码
+├── WMS-Docs/           # 文档（通过 Git 交流）
 │   ├── cursor-task.md   # Cursor 当前任务单
 │   ├── cursor-result.md # Cursor 执行结果
 │   ├── current-story.md # 当前 Story 状态
 │   ├── story-index.md  # Story 总览
-│   └── story-sequence.md # 开发顺序（254个子任务）
+│   ├── story-sequence.md # 开发顺序
+│   └── CURSOR-RULES.md # 交流规则
 ├── memory/              # OpenClaw 记忆
-└── .learnings/          # 学习记录
+└── .learnings/         # 学习记录
 ```
 
 ---
 
-## 二、文件说明
+## 三、文件说明
 
-### 2.1 cursor-task.md（OpenClaw 写，Cursor 读）
+### 3.1 cursor-task.md（OpenClaw 写，Cursor 读）
 
 Cursor 每次只读这个文件，按要求执行任务。
 
@@ -64,9 +92,9 @@ Cursor 每次只读这个文件，按要求执行任务。
 5. 遗留问题
 ```
 
-### 2.2 cursor-result.md（Cursor 写，OpenClaw 读）
+### 3.2 cursor-result.md（Cursor 写，OpenClaw 读）
 
-Cursor 完成任务后必须写入此文件。
+Cursor 完成任务后必须写入此文件，然后 Git 推送。
 
 ```markdown
 # Cursor 执行结果
@@ -102,32 +130,57 @@ Cursor 完成任务后必须写入此文件。
 
 ---
 
-## 三、开发流程
+## 四、开发流程
 
-### 3.1 串行开发原则
+### 4.1 串行开发原则
 
 - 每次只进行一个子任务
 - 一个子任务完成后才能开始下一个
 - 不允许并行开发
 
-### 3.2 任务执行流程
+### 4.2 完整交互流程
 
 ```
-1. OpenClaw 写入 cursor-task.md
-2. Cursor 读取任务
-3. Cursor 执行开发
-4. Cursor 写入 cursor-result.md
-5. OpenClaw 读取结果
-6. OpenClaw 更新 story-index.md 和 current-story.md
-7. OpenClaw 写入下一个任务到 cursor-task.md
-8. 重复 2-7
+┌─────────────────────────────────────────────────────────────┐
+│ OpenClaw（wms总控）                                          │
+├─────────────────────────────────────────────────────────────┤
+│ 1. 写入 cursor-task.md                                       │
+│ 2. Git 提交 WMS-Docs                                        │
+│ 3. Git 推送 WMS-Docs                                        │
+│ 4. 等待 Cursor 推送                                         │
+│ 5. Git 拉取 WMS-Docs                                        │
+│ 6. 读取 cursor-result.md                                    │
+│ 7. 更新 story-index.md / current-story.md                    │
+│ 8. 写入下一个 cursor-task.md                                 │
+│ 9. Git 提交推送                                             │
+│ 10. 重复 4-9                                                │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ Cursor（MDC）                                                │
+├─────────────────────────────────────────────────────────────┤
+│ 1. Git 拉取 WMS-Docs                                        │
+│ 2. 读取 cursor-task.md                                      │
+│ 3. 执行开发任务                                             │
+│ 4. Git 提交代码 + WMS-Docs（结果）                          │
+│ 5. Git 推送所有修改                                          │
+│ 6. 等待下一个任务                                           │
+│ 7. 重复 1-6                                                │
+└─────────────────────────────────────────────────────────────┘
 ```
+
+### 4.3 Git 提交时机
+
+| 操作方 | 时机 | 提交内容 |
+|--------|------|----------|
+| OpenClaw | 任务开始前 | cursor-task.md + 更新状态文件 |
+| Cursor | 任务完成后 | 代码修改 + cursor-result.md |
 
 ---
 
-## 四、Git 提交规范
+## 五、Git 提交规范
 
-### 4.1 提交信息格式
+### 5.1 提交信息格式
 
 ```
 <type>(<scope>): <subject>
@@ -137,7 +190,7 @@ scope: 模块名称（warehouse/material/inbound/outbound 等）
 subject: 简短描述
 ```
 
-### 4.2 提交示例
+### 5.2 提交示例
 
 ```
 feat(warehouse): 新增仓库档案查询接口
@@ -145,19 +198,33 @@ feat(warehouse): 新增仓库档案查询接口
 fix(material): 修复物料列表分页问题
 
 chore(api): 更新入库单 API 模块
+
+docs: 更新 cursor-task.md 11-01-PM
 ```
 
-### 4.3 提交频率
+### 5.3 OpenClaw 提交示例
 
-- 每个子任务完成后提交一次
-- 不要积累大量修改后再提交
-- 提交信息必须描述清楚改动内容
+```
+docs: 更新 story-index.md 当前进度
+
+docs: 写入 11-02-PM 任务单
+```
+
+### 5.4 Cursor 提交示例
+
+```
+feat(material): 完成物料档案动态表单功能
+
+fix(warehouse): 修复收货地址 Controller 路径
+
+docs: 11-01-PM 任务完成，更新需求确认
+```
 
 ---
 
-## 五、代码规范
+## 六、代码规范
 
-### 5.1 后端规范
+### 6.1 后端规范
 
 | 规范 | 说明 |
 |------|------|
@@ -167,7 +234,7 @@ chore(api): 更新入库单 API 模块
 | 日志 | 关键操作记录日志 |
 | 异常 | 使用统一异常处理 |
 
-### 5.2 前端规范
+### 6.2 前端规范
 
 | 规范 | 说明 |
 |------|------|
@@ -176,7 +243,7 @@ chore(api): 更新入库单 API 模块
 | 组件 | 大写开头，PascalCase |
 | 样式 | scoped CSS |
 
-### 5.3 数据库规范
+### 6.3 数据库规范
 
 | 规范 | 说明 |
 |------|------|
@@ -187,7 +254,7 @@ chore(api): 更新入库单 API 模块
 
 ---
 
-## 六、Story 开发顺序
+## 七、Story 开发顺序
 
 详见 `WMS-Docs/story-sequence.md`
 
@@ -203,9 +270,9 @@ chore(api): 更新入库单 API 模块
 
 ---
 
-## 七、状态更新规则
+## 八、状态更新规则
 
-### 7.1 OpenClaw 负责更新
+### 8.1 OpenClaw 负责更新
 
 | 文件 | 更新时机 |
 |------|----------|
@@ -213,7 +280,7 @@ chore(api): 更新入库单 API 模块
 | current-story.md | 每个子任务开始前 |
 | cursor-task.md | 每个子任务开始前 |
 
-### 7.2 Cursor 负责写入
+### 8.2 Cursor 负责写入
 
 | 文件 | 写入时机 |
 |------|----------|
@@ -221,7 +288,7 @@ chore(api): 更新入库单 API 模块
 
 ---
 
-## 八、Cursor 执行检查清单
+## 九、Cursor 执行检查清单
 
 完成每个任务后，Cursor 必须确认：
 
@@ -229,12 +296,13 @@ chore(api): 更新入库单 API 模块
 - [ ] 功能按要求实现
 - [ ] 自测通过
 - [ ] 已提交 Git
+- [ ] 已推送 Git
 - [ ] 已写入 cursor-result.md
 - [ ] 无阻塞问题
 
 ---
 
-## 九、问题升级规则
+## 十、问题升级规则
 
 遇到以下情况，Cursor 必须记录到 cursor-result.md：
 
@@ -245,11 +313,22 @@ chore(api): 更新入库单 API 模块
 
 ---
 
-## 十、交流约定
+## 十一、交流约定
 
 | 场景 | 处理方式 |
 |------|----------|
-| 任务完成 | 写入 cursor-result.md |
-| 任务阻塞 | 写入 cursor-result.md 说明原因 |
-| 需要确认 | 写入 cursor-result.md 等待指示 |
+| 任务完成 | 写入 cursor-result.md + Git 推送 |
+| 任务阻塞 | 写入 cursor-result.md 说明原因 + Git 推送 |
+| 需要确认 | 写入 cursor-result.md 等待指示 + Git 推送 |
 | 有建议 | 写入 cursor-result.md 的「下一步建议」 |
+
+---
+
+## 十二、Cursor 使用 MDC
+
+Cursor 使用 MDC（或其他 Cursor AI 工具）执行开发任务。
+
+MDC 操作方式：
+- 使用 MDC 的 `/cursor` 命令启动 Cursor
+- 通过 MDC 与 Cursor 交互执行代码开发
+- 所有代码修改通过 MDC/Cursor 完成
