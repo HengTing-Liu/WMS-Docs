@@ -323,12 +323,3 @@ docs: 11-01-PM 任务完成，更新需求确认
 | 有建议 | 写入 cursor-result.md 的「下一步建议」 |
 
 ---
-
-## 十二、Cursor 使用 MDC
-
-Cursor 使用 MDC（或其他 Cursor AI 工具）执行开发任务。
-
-MDC 操作方式：
-- 使用 MDC 的 `/cursor` 命令启动 Cursor
-- 通过 MDC 与 Cursor 交互执行代码开发
-- 所有代码修改通过 MDC/Cursor 完成

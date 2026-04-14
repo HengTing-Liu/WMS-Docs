@@ -153,7 +153,6 @@
 - `wms_inventory`（库存表）
 - `sys_warehouse`（仓库表）
 - `wms_location`（库位表）
-- `wms_material`（物料表）
 
 ---
 

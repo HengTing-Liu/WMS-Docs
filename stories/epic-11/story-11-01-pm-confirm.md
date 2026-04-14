@@ -31,7 +31,7 @@ DESC sys_table_meta;
 | create_time | datetime | YES | | CURRENT_TIMESTAMP | 创建时间 |
 | update_by | varchar(64) | YES | | NULL | 更新人 |
 | update_time | datetime | YES | | CURRENT_TIMESTAMP | 更新时间 |
-| is_deleted_column | varchar(50) | YES | | isdeleted | 逻辑删除字段 |
+| is_deleted | tinyint | YES | | 0 | 逻辑删除：0-否 1-是 |
 | has_data_permission | tinyint | NO | | 0 | 是否有数据权限 |
 | permission_field | varchar(64) | YES | | dept_id | 权限字段 |
 | permission_scope | varchar(32) | YES | | DEPT | 权限范围 |
@@ -83,7 +83,7 @@ DESC sys_table_meta;
 1. 表编码唯一，重复时报错
 2. 删除前检查是否有关联字段
 3. 启用/禁用不影响已有数据
-4. 逻辑删除：使用 is_deleted_column 字段
+4. 逻辑删除：使用 is_deleted 字段（int 类型，0-否 1-是）
 
 ---
 

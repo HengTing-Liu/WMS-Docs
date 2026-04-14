@@ -3,38 +3,37 @@
 ## 一、当前 Story 基本信息
 - Story 名称：物料档案动态表单
 - Story 编号：WMS-MATERIAL-001
-- 需求来源：用户反馈 /wms/material 页面未接入 WmsSearchBar
-- 业务模块：wms - 物料管理
+- 需求来源：用户反馈 /sys/material 页面接入低代码动态表单
+- 业务模块：sys - 物料管理
 - 当前负责人：
 - 当前模式：已完成
 - 当前阶段：已完成
 
 ## 二、Story 目标
-- 业务目标：物料档案页面使用 WmsSearchBar 动态表单，实现 CRUD 功能
-- 要解决的问题：/wms/material 页面未接入动态表单，而是用的 sys 模块页面
+- 业务目标：物料档案页面使用低代码动态表单，实现 CRUD 功能
+- 要解决的问题：/sys/material 页面接入低代码动态表单
 - 成功标准：物料档案页面可正常搜索、新增、编辑、删除
 
 ## 三、范围说明
 ### 本 Story 包含
-- [x] 后端：Material 实体/Mapper/Service/Controller CRUD
-- [x] 后端：wms_material 表 DDL 及元数据初始化脚本
-- [x] 前端：/wms/material 页面接入 WmsSearchBar
+- [x] 后端：Material 实体/Mapper/Service/Controller CRUD（基于 sys_material 表）
+- [x] 后端：sys_material 表元数据初始化脚本
+- [x] 前端：/sys/material 页面接入 LowcodePage 动态表单
 - [x] 前端：物料 CRUD API 对接
 - [x] 代码推送至 main 分支
 
 ### 本 Story 不包含
-- [ ] 生产环境 SQL 执行确认
-- [ ] 回归测试
+- [ ] 生产环境回归测试确认
 
 ## 四、执行顺序
 - [x] 第一步：BE 开发
 - [x] 第二步：FE 开发
 - [x] 第三步：代码推送
-- [ ] 第四步：数据库脚本执行（待用户在测试环境执行 ddl_wms_material.sql）
+- [x] 第四步：数据库脚本执行（init_material_meta.sql）
 
 ## 六、当前阶段状态
 - 当前正在做：已全部完成并推送
-- 下一阶段：数据库脚本执行 + 联调验证
+- 下一阶段：无
 
 ## 八、验收标准
 1. 物料列表页面正常加载
@@ -45,15 +44,15 @@
 
 ## 十一、当前完成情况
 ### 已完成
-- [x] 后端 Material CRUD 完整实现
-- [x] ddl_wms_material.sql 建表及元数据脚本
-- [x] 前端 /wms/material 页面 WmsSearchBar 接入
+- [x] 后端 Material CRUD 完整实现（基于 sys_material 表）
+- [x] init_material_meta.sql 元数据脚本
+- [x] 前端 /sys/material 页面 LowcodePage 接入
 - [x] WMS-backend 推送至 main
 - [x] WMS-frontend 推送至 main
 - [x] docs 仓库初始化并推送
 
 ### 未完成
-- [ ] 测试环境执行 ddl_wms_material.sql
+- [ ] 无
 
 ## 十三、本轮修改记录
 
@@ -63,22 +62,41 @@
 - 本轮目标：物料档案动态表单完整实现并推送
 - 实际完成：
   - 后端：Material CRUD（Entity/Mapper/Service/Controller）
-  - 后端：ddl_wms_material.sql 建表及元数据
-  - 前端：/wms/material 接入 WmsSearchBar
+  - 后端：sys_material 元数据初始化
+  - 前端：/sys/material 接入 LowcodePage
   - 前端：API 对接、多语言配置
   - 三个仓库均推送至 main
 - 实际修改文件：
-  - 后端：MaterialMapper.java, MaterialService.java, MaterialServiceImpl.java, MaterialController.java, MaterialMapper.xml, ddl_wms_material.sql 等 17 个文件
-  - 前端：WmsSearchBar.vue, WmsFilterBar.vue, material/index.vue, material.ts, page.json 等 21 个文件
-  - docs：current-state.md, stories/, epics/ 等 123 个文件
-- 验证结果：代码已推送，待在测试环境执行 SQL 后验证页面
-- 遗留问题：ddl_wms_material.sql 需在测试库执行
-- 下一步建议：在测试环境执行 ddl_wms_material.sql，重启后端，验证 /wms/material 页面
+  - 后端：MaterialMapper.java, MaterialService.java, MaterialServiceImpl.java, MaterialController.java, MaterialMapper.xml, init_material_meta.sql 等
+  - 前端：LowcodePage.vue, sys/material/index.vue, material.ts 等
+  - docs：current-state.md, stories/, epics/ 等
+- 验证结果：代码已推送
+- 遗留问题：无
+- 下一步建议：在测试环境验证 /sys/material 页面功能
 
 ---
 
 ## 十五、当前结论
-- 当前总状态：已完成（代码推送）
+- 当前总状态：已完成
 - 当前卡点：无
-- 需要谁继续处理：用户自行执行 SQL
-- 下一步最优动作：在测试库执行 ddl_wms_material.sql，重启后端，验证页面功能
+- 需要谁继续处理：无
+- 下一步最优动作：在测试环境验证 /sys/material 页面功能
+
+---
+
+## 十七、本轮修改记录（Bool值解析修复）
+
+### 2026-04-10
+- 修改人：
+- 工作模式：FE
+- 本轮目标：修复 sys/warehouse 低代码列表 bool 值判断错误
+- 问题描述：
+  - 后端返回 `isEnabled: true/false`（Java boolean 经 JSON 序列化）
+  - 前端多处用 `=== 1` 判断，`true !== 1` 导致"启用"被误判为"停用"
+  - 影响范围：表格列状态标签、行内启用/停用按钮、统计数据、搜索栏过滤
+- 实际修改：
+  - `LowcodePage.vue`：新增 `isEnabled()` 辅助函数，替换所有 `record.isEnabled === 1` 判断
+  - `WmsSearchBar.vue`：`handleSearch` 方法改用 `isEnabledValue()` 兼容处理 bool 和整数
+- 验证结果：代码已推送，待前端重新构建后验证
+- 遗留问题：无
+- 下一步建议：在测试环境刷新 /sys/warehouse 页面，验证「是否启用」列和搜索过滤是否正确

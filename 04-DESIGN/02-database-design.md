@@ -120,30 +120,41 @@ CREATE TABLE wms_warehouse (
 
 ### 2.2 物料管理
 
-#### 2.2.1 物料表 (wms_material)
+#### 2.2.1 物料表 (sys_material)
 
 | 字段 | 类型 | 约束 | 说明 |
 |------|------|------|------|
 | id | BIGINT | PK, AUTO | 主键 |
-| tenant_id | VARCHAR(64) | NOT NULL | 租户ID |
 | material_code | VARCHAR(50) | NOT NULL, UK | 物料编码 |
-| material_name_cn | VARCHAR(200) | - | 物料中文名称 |
-| material_name_en | VARCHAR(200) | - | 物料英文名称 |
+| material_name | VARCHAR(200) | NOT NULL | 物料名称 |
+| spec | VARCHAR(200) | - | 规格型号 |
+| unit | VARCHAR(20) | - | 单位 |
+| category | VARCHAR(100) | - | 物料类别 |
+| status | INT | DEFAULT 1 | 状态：0-禁用 1-启用 |
+| is_deleted | TINYINT | DEFAULT 0 | 逻辑删除 |
+| create_by | VARCHAR(64) | - | 创建人 |
+| create_time | DATETIME | NOT NULL | 创建时间 |
+| update_by | VARCHAR(64) | - | 更新人 |
+| update_time | DATETIME | NOT NULL | 更新时间 |
+| material_en_name | VARCHAR(200) | - | 物料英文名称 |
 | export_name | VARCHAR(200) | - | 出口名称 |
 | brand | VARCHAR(100) | - | 品牌 |
-| article_no | VARCHAR(50) | - | 货号 |
-| category | VARCHAR(50) | - | 产品类别 |
-| spec | VARCHAR(100) | - | 规格 |
-| unit | VARCHAR(20) | - | 计量单位 |
+| item_no | VARCHAR(50) | - | 货号 |
 | package_spec | VARCHAR(100) | - | 包装规格 |
-| is_qc_required | TINYINT | DEFAULT 0 | 是否必检 |
-| udi_di | VARCHAR(100) | - | UDI-DI编码 |
-| version | BIGINT | DEFAULT 0 | 版本号 |
-| deleted | TINYINT | DEFAULT 0 | 逻辑删除 |
-| created_by | VARCHAR(64) | - | 创建人 |
-| created_at | DATETIME | NOT NULL | 创建时间 |
-| updated_by | VARCHAR(64) | - | 更新人 |
-| updated_at | DATETIME | - | 更新时间 |
+| storage_condition | VARCHAR(200) | - | 存储条件 |
+| transport_condition | VARCHAR(200) | - | 运输条件 |
+| length | DECIMAL(10,2) | - | 长(cm) |
+| width | DECIMAL(10,2) | - | 宽(cm) |
+| height | DECIMAL(10,2) | - | 高(cm) |
+| logistics_package | VARCHAR(100) | - | 物流包装 |
+| box_model | VARCHAR(100) | - | 箱型号 |
+| outer_package | VARCHAR(100) | - | 产品外包装 |
+| require_qc | TINYINT | DEFAULT 0 | 是否必检 |
+| supplier_brand | VARCHAR(100) | - | 供应商品牌 |
+| supplier_item_no | VARCHAR(50) | - | 供应商货号 |
+| supplier_spec | VARCHAR(200) | - | 供应商规格 |
+| erp_sync_remark | VARCHAR(500) | - | ERP同步备注 |
+| remark | VARCHAR(500) | - | 备注 |
 
 #### 2.2.2 物料批次表 (wms_batch)
 

@@ -136,8 +136,6 @@ WMS-backend/
 |------|------|
 | wms_warehouse | 仓库表 |
 | wms_location | 库位表 |
-| wms_material | 物料表 |
-| wms_material_meta_data | 物料元数据 |
 | sys_table_meta | 表元数据 |
 | sys_column_meta | 字段元数据 |
 | sys_user | 用户表 |
