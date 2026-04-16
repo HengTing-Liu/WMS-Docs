@@ -84,7 +84,38 @@
 
 ---
 
-## 十七、本轮修改记录（Bool值解析修复）
+## 十七、Story 状态更新记录（2026-04-16）
+
+经完整核对前后端代码与 docs 文档，以下 Story 已实现并投入使用，更新状态为 **已完成**：
+
+### 11-02 字段元数据管理
+- **后端**：`MetaController` 已提供字段元数据 CRUD、Schema 查询、批量排序接口
+- **前端**：`columnMeta/index.vue` 管理页面已上线，支持拖拽排序、批量新增、从其他表复制、编辑删除
+- **状态**：✅ 已完成
+
+### 11-03 操作元数据管理
+- **后端**：`MetaController` 已提供操作按钮 CRUD、按表编码获取操作列表、批量排序、批量删除接口
+- **前端**：`operationMeta/index.vue` 管理页面已上线，支持增删改查和排序调整
+- **状态**：✅ 已完成
+
+### 11-05 低代码引擎接口
+- **后端**：`LowcodeCrudController` 已提供通用 CRUD（列表/详情/新增/修改/删除/启用停用/导出/唯一性校验）
+- **后端**：`MetaController` 已提供 Schema 获取（字段 + 操作按钮）、表单分组查询
+- **状态**：✅ 已完成
+
+### 11-06 前端低代码组件
+- **前端**：`LowcodePage.vue`（标准列表页，含搜索/表格/按钮/分页/统计卡片）
+- **前端**：`LowcodeDrawer.vue` / `LowcodeFormPage.vue`（动态表单抽屉/页面）
+- **前端**：`FieldRenderer.vue`（字段渲染器，支持 text/textarea/number/select/switch/date/datetime）
+- **前端**：事件系统（builtin/api/download/redirect）、权限兼容、状态持久化、导出功能均已实现
+- **状态**：✅ 已完成
+
+### 当前进行中
+- **11-04 字典数据管理**：基础 CRUD 页面与接口已存在，`DictServiceImpl` 中有缓存与集成 TODO 待完善，状态保持 **FE 进行中**
+
+---
+
+## 十八、本轮修改记录（Bool值解析修复）
 
 ### 2026-04-10
 - 修改人：

@@ -249,10 +249,10 @@ public List<DictItemVO> getDictData(String dictType) {
 
 ### 9.1 功能验收
 
-- [ ] Schema 接口返回完整的字段和操作配置
-- [ ] CRUD 接口正常工作
-- [ ] 启用/禁用功能正常
-- [ ] 导出功能正常
+- [x] Schema 接口返回完整的字段和操作配置
+- [x] CRUD 接口正常工作
+- [x] 启用/禁用功能正常
+- [x] 导出功能正常
 - [ ] 字典缓存生效
 
 ### 9.2 性能验收
@@ -264,8 +264,8 @@ public List<DictItemVO> getDictData(String dictType) {
 
 ## 10. 交付物清单
 
-- [ ] 后端代码（Controller/Service/Handler）
-- [ ] 接口文档
+- [x] 后端代码（Controller/Service/Handler）
+- [x] 接口文档
 - [ ] 单元测试
 
 ---

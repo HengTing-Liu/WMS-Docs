@@ -274,11 +274,11 @@ export function useSchema(tableCode: string) {
 
 ### 8.1 功能验收
 
-- [ ] LowcodePage 组件渲染正常
-- [ ] LowcodeDrawer 组件渲染正常
-- [ ] FieldRenderer 渲染各类型字段正常
-- [ ] Schema 动态加载正常
-- [ ] 字典数据加载正常
+- [x] LowcodePage 组件渲染正常
+- [x] LowcodeDrawer 组件渲染正常
+- [x] FieldRenderer 渲染各类型字段正常
+- [x] Schema 动态加载正常
+- [x] 字典数据加载正常
 
 ### 8.2 性能验收
 
@@ -289,10 +289,10 @@ export function useSchema(tableCode: string) {
 
 ## 9. 交付物清单
 
-- [ ] LowcodePage 组件
-- [ ] LowcodeDrawer 组件
-- [ ] FieldRenderer 组件
-- [ ] Hooks 封装
+- [x] LowcodePage 组件
+- [x] LowcodeDrawer 组件
+- [x] FieldRenderer 组件
+- [x] Hooks 封装
 - [ ] 使用文档
 
 ---

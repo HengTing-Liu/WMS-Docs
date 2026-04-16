@@ -23,11 +23,11 @@
 | Story编号 | Story名称 | 优先级 | 工期 | 状态 |
 |---------|---------|--------|------|------|
 | [11-01](../stories/epic-11/story-11-01.md) | 表元数据管理 | P0 | 0.5d | Draft |
-| [11-02](../stories/epic-11/story-11-02.md) | 字段元数据管理 | P0 | 0.5d | Draft |
-| [11-03](../stories/epic-11/story-11-03.md) | 操作元数据管理 | P0 | 0.5d | Draft |
-| [11-04](../stories/epic-11/story-11-04.md) | 字典数据管理 | P0 | 0.5d | Draft |
-| [11-05](../stories/epic-11/story-11-05.md) | 低代码引擎接口 | P0 | 1.5d | Draft |
-| [11-06](../stories/epic-11/story-11-06.md) | 前端低代码组件 | P0 | 1d | Draft |
+| [11-02](../stories/epic-11/story-11-02.md) | 字段元数据管理 | P0 | 0.5d | Done |
+| [11-03](../stories/epic-11/story-11-03.md) | 操作元数据管理 | P0 | 0.5d | Done |
+| [11-04](../stories/epic-11/story-11-04.md) | 字典数据管理 | P0 | 0.5d | Done |
+| [11-05](../stories/epic-11/story-11-05.md) | 低代码引擎接口 | P0 | 1.5d | Done |
+| [11-06](../stories/epic-11/story-11-06.md) | 前端低代码组件 | P0 | 1d | Done |
 
 ---
 
