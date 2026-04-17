@@ -115,7 +115,29 @@
 
 ---
 
-## 十八、本轮修改记录（Bool值解析修复）
+## 十八、本轮修改记录（sys_user del_flag → is_deleted）
+
+### 2026-04-15
+- 修改人：
+- 工作模式：BE
+- 本轮目标：同步 sys_user 表字段变更（数据库已改 del_flag → is_deleted）
+- 实际修改：
+  - `SysUser.java`：字段 `delFlag` → `isDeleted`，getter/setter 方法更新
+  - `SysUserMapper.xml`：所有 SQL 列名 `del_flag` → `is_deleted`
+  - `SysDeptMapper.xml`：关联查询 `del_flag` → `is_deleted`
+  - `init_sys_user_meta.sql`：元数据字段名更新
+  - `init_meta_data.sql`：元数据字段名更新
+  - `mysql_init_data.sql`：初始数据字段名更新
+- 实际修改文件：
+  - `WMS-backend/wms-center-dao/src/main/java/com/abtk/product/dao/entity/SysUser.java`
+  - `WMS-backend/wms-center-dao/src/main/resources/mapper/SysUserMapper.xml`
+  - `WMS-backend/wms-center-dao/src/main/resources/mapper/SysDeptMapper.xml`
+  - `WMS-backend/scripts/init_sys_user_meta.sql`
+  - `WMS-backend/scripts/init_meta_data.sql`
+  - `WMS-backend/scripts/mysql_init_data.sql`
+- 验证结果：代码已修改完成，待编译验证
+- 遗留问题：无
+- 下一步建议：重新编译后端代码，测试 sys_user 相关功能
 
 ### 2026-04-10
 - 修改人：
@@ -131,3 +153,75 @@
 - 验证结果：代码已推送，待前端重新构建后验证
 - 遗留问题：无
 - 下一步建议：在测试环境刷新 /sys/warehouse 页面，验证「是否启用」列和搜索过滤是否正确
+
+### 2026-04-17
+- 修改人：
+- 工作模式：BE
+- 本轮目标：低代码按钮显隐新增独立字段 `show_button`，并为查看能力准备后端元数据
+- 实际修改：
+  - `TableOperation.java`：新增字段 `showButton`
+  - `TableOperationMapper.xml`：补充 `show_button -> showButton` 映射，insert/update 支持 `show_button`
+  - `ddl_sys_table_operation_extension.sql`：新增 `show_button` 字段扩展语句
+  - `init_material_meta.sql`：操作按钮初始化补充 `show_button`，并新增 `row_read` 按钮
+  - 新增脚本 `add_lowcode_row_read_and_show_button_20260417.sql`：兼容增列、回填默认值、初始化 `row_read`
+- 实际修改文件：
+  - `WMS-backend/wms-center-dao/src/main/java/com/abtk/product/dao/entity/TableOperation.java`
+  - `WMS-backend/wms-center-dao/src/main/resources/mapper/TableOperationMapper.xml`
+  - `WMS-backend/scripts/ddl_sys_table_operation_extension.sql`
+  - `WMS-backend/scripts/init_material_meta.sql`
+  - `WMS-backend/scripts/add_lowcode_row_read_and_show_button_20260417.sql`
+- 验证结果：
+  - 已执行 `mvn -pl wms-center-dao -am -DskipTests compile`，编译通过
+- 遗留问题：
+  - 需前端接入 `show_button` 与 `row_read`，完成查看弹框功能
+- 下一步建议：
+  - 进入 FE 阶段实现低代码查看弹框与按钮显隐逻辑
+
+### 2026-04-17
+- 修改人：
+- 工作模式：FE
+- 本轮目标：低代码列表新增 `row_read` 查看弹框，并支持 `show_button` 按钮显隐
+- 实际修改：
+  - 新增 `LowcodeReadModal.vue`：使用只读表单分组弹框展示详情，不提供保存/编辑/删除按钮
+  - `LowcodePage.vue`：
+    - 行内操作新增 `read/row_read` 渲染与点击处理
+    - 接入 `LowcodeReadModal`，支持按记录 ID 加载详情
+    - `canRenderAction` 增加 `status/showButton` 显隐判断（默认未配置视为显示）
+    - 解析操作元数据时带上 `status`、`showButton`
+  - `events.ts`：内置动作新增 `read`、`row_read` 分发
+  - `types.ts`：补充 `showButton`、`status` 类型定义；builtin handler 支持 `read`
+  - `api.ts`：取消 `fetchTableOperations` 对 `status=1` 的提前过滤，统一交由页面显隐规则处理
+  - 修复历史冲突文件 `en-US/page.json` 中残留的 `>>>>>>> Stashed changes`
+- 实际修改文件：
+  - `WMS-frontend/apps/web-antd/src/lowcode/LowcodeReadModal.vue`
+  - `WMS-frontend/apps/web-antd/src/lowcode/LowcodePage.vue`
+  - `WMS-frontend/apps/web-antd/src/lowcode/events.ts`
+  - `WMS-frontend/apps/web-antd/src/lowcode/types.ts`
+  - `WMS-frontend/apps/web-antd/src/lowcode/api.ts`
+  - `WMS-frontend/apps/web-antd/src/locales/langs/en-US/page.json`
+- 验证结果：
+  - 已执行 `pnpm -C apps/web-antd build`，构建通过（先修复 JSON 冲突后再次构建）
+  - 已检查修改文件 lint，未发现新增 lint 错误
+- 遗留问题：
+  - 无功能阻塞项
+- 下一步建议：
+  - 在测试环境验证 `row_read` 的显隐开关、只读弹框字段显示及关闭后列表状态保持
+
+### 2026-04-17
+- 修改人：
+- 工作模式：BE
+- 本轮目标：删除 location grid 相关残留代码，修复 `WmsLocationGridConfigMapper` 缺失导致的编译报错
+- 实际修改：
+  - 删除 `WmsLocationGridConfigServiceImpl.java`
+  - 删除 `WmsLocationGridConfigService.java`
+  - 删除 `WmsLocationGridConfig.java`
+- 实际修改文件：
+  - `WMS-backend/wms-center-service/src/main/java/com/abtk/product/service/location/impl/WmsLocationGridConfigServiceImpl.java`（删除）
+  - `WMS-backend/wms-center-service/src/main/java/com/abtk/product/service/location/service/WmsLocationGridConfigService.java`（删除）
+  - `WMS-backend/wms-center-dao/src/main/java/com/abtk/product/dao/entity/WmsLocationGridConfig.java`（删除）
+- 验证结果：
+  - 已执行 `mvn -pl wms-center-service -am -DskipTests compile`，编译通过
+- 遗留问题：
+  - 无
+- 下一步建议：
+  - 若后续彻底下线网格能力，可继续清理历史 SQL 文件 `migrate_remove_location_grid_config.sql` 和相关菜单脚本引用
