@@ -32,9 +32,6 @@ DESC sys_table_meta;
 | update_by | varchar(64) | YES | | NULL | 更新人 |
 | update_time | datetime | YES | | CURRENT_TIMESTAMP | 更新时间 |
 | is_deleted | tinyint | YES | | 0 | 逻辑删除：0-否 1-是 |
-| has_data_permission | tinyint | NO | | 0 | 是否有数据权限 |
-| permission_field | varchar(64) | YES | | dept_id | 权限字段 |
-| permission_scope | varchar(32) | YES | | DEPT | 权限范围 |
 
 ---
 
